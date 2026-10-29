@@ -33,7 +33,11 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/@fontsource-variable/vazirmatn/index.css",
+              {  "input": "src/global.scss" },
+              { "input": "src/theme/variables.scss" }],
             "scripts": [],
             "browser": "src/main.ts"
           },

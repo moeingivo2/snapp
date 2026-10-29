@@ -1,0 +1,23 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  height: 100%;
+}
+
+h1 {
+  margin: 0;
+  font-weight: 800;
+  color: var(--ion-color-primary);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--ion-color-medium);
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

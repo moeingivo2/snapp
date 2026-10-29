@@ -1,21 +1,164 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Blank </ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>اسنپ</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openAccount()">👤 حساب کاربری</ion-button>
+      <ion-button (click)="logout()">خروج</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [scrollY]="false">
+  <app-map
+    [userPosition]="userPos()"
+    [origin]="origin()?.position ?? null"
+    [destination]="destination()?.position ?? null"
+    [route]="route()?.coordinates ?? null"
+    [driverPosition]="rides.current()?.driver?.position ?? null"
+    (centerChange)="onCenterChange($event)"
+  />
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>
-      Start with Ionic
-      <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a>
-    </p>
-  </div>
+  @if (showPin()) {
+    <div class="center-pin" [class.destination-pin]="phase() === 'destination'">📍</div>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="locateMe()" [disabled]="locating()">
+      @if (locating()) {
+        <ion-spinner name="crescent"></ion-spinner>
+      } @else {
+        <ion-icon name="locate"></ion-icon>
+      }
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <div class="sheet">
+    @if (rides.current(); as ride) {
+      <div class="status">
+        @if (ride.status === 'searching') {
+          <ion-spinner name="dots"></ion-spinner>
+        }
+        <strong>{{ statusLabel() }}</strong>
+      </div>
+
+      @if (ride.driver; as driver) {
+        <div class="driver">
+          <div class="driver-avatar"><ion-icon name="car"></ion-icon></div>
+          <div class="driver-info">
+            <strong>{{ driver.name }}</strong>
+            <small>{{ driver.car }}</small>
+          </div>
+          <div class="driver-meta">
+            <span class="plate">{{ driver.plate }}</span>
+            <small class="rating">
+              <ion-icon name="star"></ion-icon>
+              {{ driver.rating.toLocaleString('fa-IR') }}
+            </small>
+          </div>
+        </div>
+      }
+
+      @if (ride.status === 'searching' || ride.status === 'accepted' || ride.status === 'arrived') {
+        <ion-button expand="block" fill="outline" color="danger" [disabled]="cancelling()" (click)="cancelRide()">
+          @if (cancelling()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            لغو سفر
+          }
+        </ion-button>
+      }
+
+      @if (ride.status === 'finished') {
+        <div class="fare">
+          <span>مبلغ قابل پرداخت</span>
+          <strong>{{ price(ride.option.price) }} تومان</strong>
+        </div>
+        <ion-button expand="block" color="success" (click)="pay()">💳 پرداخت نمایشی</ion-button>
+        <ion-button expand="block" (click)="newRide()">سفر جدید</ion-button>
+      }
+
+      @if (ride.status === 'cancelled') {
+        <div class="actions">
+          <ion-button fill="clear" (click)="dismissRide()">درخواست دوباره</ion-button>
+          <ion-button fill="clear" color="medium" (click)="newRide()">سفر جدید</ion-button>
+        </div>
+      }
+    } @else if (phase() === 'review') {
+      <div class="place-row">
+        <span class="dot dot-origin"></span>
+        <div class="place-text">
+          <small>مبدأ</small>
+          <span>{{ origin()?.address }}</span>
+        </div>
+        <ion-button fill="clear" size="small" (click)="editOrigin()">تغییر</ion-button>
+      </div>
+
+      <div class="place-row">
+        <span class="dot dot-destination"></span>
+        <div class="place-text">
+          <small>مقصد</small>
+          <span>{{ destination()?.address }}</span>
+        </div>
+        <ion-button fill="clear" size="small" (click)="editDestination()">تغییر</ion-button>
+      </div>
+
+      @if (quoting()) {
+        <div class="quoting"><ion-spinner name="dots"></ion-spinner> در حال محاسبه قیمت…</div>
+      } @else if (options().length) {
+        <div class="options">
+          @for (option of options(); track option.type) {
+            <button
+              type="button"
+              class="option"
+              [class.selected]="option.type === selected()"
+              (click)="selectOption(option.type)"
+            >
+              <span class="option-title">{{ option.title }}</span>
+              <small>{{ option.etaMinutes.toLocaleString('fa-IR') }} دقیقه</small>
+              <strong>{{ price(option.price) }} تومان</strong>
+            </button>
+          }
+        </div>
+
+        <ion-button expand="block" [disabled]="requesting() || !selectedOption()" (click)="requestRide()">
+          @if (requesting()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            درخواست {{ selectedOption()?.title }}
+          }
+        </ion-button>
+      } @else {
+        <ion-button expand="block" fill="outline" (click)="loadQuote()">تلاش دوباره برای محاسبه قیمت</ion-button>
+      }
+    } @else {
+      @if (phase() === 'destination') {
+        <div class="place-row">
+          <span class="dot dot-origin"></span>
+          <div class="place-text">
+            <small>مبدأ</small>
+            <span>{{ origin()?.address }}</span>
+          </div>
+          <ion-button fill="clear" size="small" (click)="editOrigin()">تغییر</ion-button>
+        </div>
+      }
+
+      <small class="label">
+        {{ phase() === 'origin' ? 'مبدأ را روی نقشه مشخص کنید' : 'مقصد را روی نقشه مشخص کنید' }}
+      </small>
+
+      <div class="address">
+        @if (resolving()) {
+          <ion-spinner name="dots"></ion-spinner>
+        } @else {
+          {{ address() ?? 'آدرس این نقطه پیدا نشد' }}
+        }
+      </div>
+
+      <ion-button expand="block" [disabled]="resolving() || !center()" (click)="confirm()">
+        {{ phase() === 'origin' ? 'تأیید مبدأ' : 'تأیید مقصد' }}
+      </ion-button>
+    }
+  </div>
+</ion-footer>
