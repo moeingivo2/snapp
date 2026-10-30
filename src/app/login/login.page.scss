@@ -1,23 +1,11 @@
-.login {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
-  height: 100%;
-}
-
-h1 {
-  margin: 0;
-  font-weight: 800;
-  color: var(--ion-color-primary);
-}
-
-.subtitle {
-  margin: 0;
-  color: var(--ion-color-medium);
-}
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+.login { display: flex; min-height: 100%; flex-direction: column; justify-content: center; gap: 26px; padding: 30px 8px; }
+.identity { display: flex; align-items: center; gap: 12px; }
+.identity-mark { color: var(--ion-color-primary); font-size: 36px; font-weight: 900; line-height: 1; }
+.identity-mark span { color: var(--sn-text); }
+.identity-caption { padding-inline-start: 12px; color: var(--sn-muted); border-inline-start: 1px solid var(--sn-border); font-size: 12px; }
+.login-card { display: flex; flex-direction: column; gap: 16px; padding: 24px; color: var(--sn-text); background: var(--sn-surface); border: 1px solid var(--sn-border); border-radius: 24px; box-shadow: var(--sn-shadow); }
+h1 { margin: 0; font-size: 23px; font-weight: 800; }
+.subtitle { margin: 0 0 6px; color: var(--sn-muted); font-size: 14px; line-height: 1.9; }
+ion-input { --border-radius: 14px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px; }
+.login-footer { margin: 0; color: var(--sn-muted); text-align: center; font-size: 12px; }

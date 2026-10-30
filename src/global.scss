@@ -40,13 +40,24 @@
 
 
 body {
-  background: #eceff1;
+  background: var(--sn-background);
 }
 
 ion-app {
   max-width: 480px;
   margin: 0 auto;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 50px rgba(27, 53, 38, 0.12);
+}
+ion-content { --background: var(--sn-background); --color: var(--sn-text); }
+ion-toolbar { --background: var(--sn-surface); --color: var(--sn-text); --border-color: var(--sn-border); }
+ion-button { --border-radius: 14px; min-height: 44px; font-weight: 700; letter-spacing: 0; }
+ion-input { --highlight-color-focused: var(--ion-color-primary); }
+button:focus-visible, ion-button:focus-visible, ion-fab-button:focus-visible {
+  outline: 3px solid var(--ion-color-primary);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
 }
 ion-input.code-input .native-input {
   text-align: center;

@@ -6,6 +6,7 @@ const PAID_KEY = 'snapp_paid_rides';
 
 @Component({
   selector: 'app-payment',
+  styleUrl: './payment.page.scss',
   imports: [IonButton, IonContent, IonHeader, IonTitle, IonToolbar],
   template: `
     <ion-header><ion-toolbar color="primary"><ion-title>💳 پرداخت سفر</ion-title><ion-button slot="start" fill="clear" color="light" (click)="back()">بازگشت</ion-button></ion-toolbar></ion-header>

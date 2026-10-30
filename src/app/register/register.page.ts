@@ -14,9 +14,9 @@ import type { UserProfile, UserRole } from '../core/models';
         <div class="register-icon">{{ role === 'driver' ? '🚗' : '👤' }}</div>
         <h1>تکمیل ثبت‌نام</h1>
         <p class="subtitle">نوع حساب را انتخاب و اطلاعاتت را وارد کن.</p>
-        <div class="role-picker">
-          <button type="button" [class.active]="role === 'passenger'" (click)="role = 'passenger'">👤 مسافر</button>
-          <button type="button" [class.active]="role === 'driver'" (click)="role = 'driver'">🚗 راننده</button>
+        <div class="role-picker" aria-label="نوع حساب">
+          <button type="button" [class.active]="role === 'passenger'" [attr.aria-pressed]="role === 'passenger'" (click)="role = 'passenger'">👤 مسافر</button>
+          <button type="button" [class.active]="role === 'driver'" [attr.aria-pressed]="role === 'driver'" (click)="role = 'driver'">🚗 راننده</button>
         </div>
         <form [formGroup]="form" (ngSubmit)="submit()">
           <ion-input formControlName="firstName" label="نام" labelPlacement="floating" fill="outline" autocomplete="given-name"></ion-input>
@@ -41,6 +41,14 @@ import type { UserProfile, UserRole } from '../core/models';
     h1{margin:0;font-weight:800;color:#00c878}.subtitle{margin:0 0 8px;color:#d1d5d3}
     .role-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px}.role-picker button{padding:12px;border:1px solid #c9e5d5;border-radius:12px;background:#eaf6ef;color:#174b35;font:inherit;font-weight:600;cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease}.role-picker button.active{border-color:#008f50;background:#00a85a;color:#fff;font-weight:700}
     form{display:flex;flex-direction:column;gap:12px}ion-input{--background:#171717;--color:#fff;--border-color:#777;--highlight-color-focused:#00c878}ion-button{margin-top:8px}
+    ion-content{--background:var(--sn-background);--color:var(--sn-text)}
+    .register{max-width:440px;margin:auto;padding:32px 8px;color:var(--sn-text)}
+    .register-icon{background:var(--sn-soft);border-radius:20px}
+    h1{color:var(--sn-text);font-size:23px}.subtitle{color:var(--sn-muted);line-height:1.8}
+    .role-picker{padding:5px;background:var(--sn-surface);border:1px solid var(--sn-border);border-radius:16px}
+    .role-picker button{min-height:48px;border:1px solid transparent;background:transparent;color:var(--sn-muted)}
+    .role-picker button.active{border-color:var(--ion-color-primary);background:var(--sn-soft);color:var(--ion-color-primary)}
+    ion-input{--background:var(--sn-surface);--color:var(--sn-text);--border-color:var(--sn-border);--border-radius:14px;--highlight-color-focused:var(--ion-color-primary)}
   `],
 })
 export class RegisterPage {

@@ -58,6 +58,18 @@ import { RideService } from '../core/ride.service';
     .empty p{margin:0;color:#ccc;font-size:13px;line-height:1.7}
     .loading{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0;padding:22px;color:#ddd;background:#111;border-radius:16px}
     ion-content > ion-button{margin-top:12px;--border-radius:12px}
+    :host{color:var(--sn-text)}
+    ion-content{--background:var(--sn-background);--color:var(--sn-text)}
+    ion-toolbar{--background:var(--sn-surface);--color:var(--sn-text)}
+    ion-toolbar ion-button{--color:var(--ion-color-primary)}
+    .welcome,.ride,.empty,.loading{background:var(--sn-surface);color:var(--sn-text);border-color:var(--sn-border);box-shadow:var(--sn-shadow)}
+    .welcome>span{background:var(--sn-soft)}
+    .welcome h1,.heading h2,.ride h2{color:var(--sn-text)}
+    .welcome p,.ride p,.empty p,.loading{color:var(--sn-muted)}
+    .heading,.status,.ride-bottom{border-color:var(--sn-border)}
+    .heading span{background:var(--sn-soft);color:var(--sn-muted)}
+    .ride.active{border-color:var(--ion-color-primary)}
+    .status,.ride-bottom strong,.ride>strong{color:var(--ion-color-primary)}
   `],
 })
 export class DriverPage implements OnDestroy {

@@ -1,9 +1,9 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>اسنپ</ion-title>
+  <ion-toolbar>
+    <ion-title><span class="brand">اسنپ<span class="brand-dot">.</span></span><span class="brand-caption">همراه مسیرهای تو</span></ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="openAccount()">👤 حساب کاربری</ion-button>
-      <ion-button (click)="logout()">خروج</ion-button>
+      <ion-button fill="clear" (click)="openAccount()">حساب کاربری</ion-button>
+      <ion-button fill="clear" color="medium" (click)="logout()">خروج</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -19,11 +19,11 @@
   />
 
   @if (showPin()) {
-    <div class="center-pin" [class.destination-pin]="phase() === 'destination'">📍</div>
+    <div class="center-pin" [class.destination-marker]="phase() === 'destination'" aria-hidden="true"><span></span></div>
   }
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="locateMe()" [disabled]="locating()">
+    <ion-fab-button (click)="locateMe()" [disabled]="locating()" aria-label="موقعیت فعلی من">
       @if (locating()) {
         <ion-spinner name="crescent"></ion-spinner>
       } @else {
@@ -35,6 +35,10 @@
 
 <ion-footer class="ion-no-border">
   <div class="sheet">
+    <div class="sheet-heading">
+      <div><span class="eyebrow">سفر با اسنپ</span><h1>{{ rides.current() ? 'وضعیت سفر' : phase() === 'review' ? 'انتخاب سفر' : phase() === 'origin' ? 'از کجا می‌ریم؟' : 'به کجا می‌ریم؟' }}</h1></div>
+      @if (!rides.current()) { <span class="step-label">{{ phase() === 'origin' ? '۱' : phase() === 'destination' ? '۲' : '۳' }} از ۳</span> }
+    </div>
     @if (rides.current(); as ride) {
       <div class="status">
         @if (ride.status === 'searching') {
@@ -113,6 +117,7 @@
               type="button"
               class="option"
               [class.selected]="option.type === selected()"
+              [attr.aria-pressed]="option.type === selected()"
               (click)="selectOption(option.type)"
             >
               <span class="option-title">{{ option.title }}</span>

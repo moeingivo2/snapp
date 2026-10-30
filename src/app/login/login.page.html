@@ -1,5 +1,7 @@
 <ion-content class="ion-padding">
   <div class="login">
+    <div class="identity"><span class="identity-mark">اسنپ<span>.</span></span><span class="identity-caption">همراه مسیرهای تو</span></div>
+    <div class="login-card">
     @if (step() === 'phone') {
       <h1>ورود به اسنپ</h1>
       <p class="subtitle">شماره موبایل خود را وارد کنید</p>
@@ -72,5 +74,7 @@
 
       <ion-text color="medium"><small>نسخه‌ی آزمایشی: کد تأیید 12345 است.</small></ion-text>
     }
+    </div>
+    <p class="login-footer">هر مسیر، یک شروع تازه</p>
   </div>
 </ion-content>
